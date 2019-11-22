@@ -18,6 +18,9 @@ namespace GitLabApiClient.Internal.Queries
             if (options.Labels.Any())
                 Add("labels", options.Labels);
 
+            if (options.NotLabels.Any())
+                Add("not[labels]", options.NotLabels)            ;
+
             if (!options.MilestoneTitle.IsNullOrEmpty())
                 Add("milestone", options.MilestoneTitle);
 
@@ -39,6 +42,18 @@ namespace GitLabApiClient.Internal.Queries
 
             if (!options.Filter.IsNullOrEmpty())
                 Add("search", options.Filter);
+
+            if (options.CreatedAfter.HasValue)
+                Add("created_after", options.CreatedAfter.Value);
+
+            if (options.CreatedBefore.HasValue)
+                Add("created_before", options.CreatedBefore.Value);
+
+            if (options.UpdatedAfter.HasValue)
+                Add("updated_after", options.UpdatedAfter.Value);
+
+            if (options.UpdatedBefore.HasValue)
+                Add("updated_before", options.UpdatedBefore.Value);
         }
 
         private static string GetStateQueryValue(IssueState state)

@@ -15,15 +15,5 @@ namespace GitLabApiClient.Models.Issues.Requests
         internal ProjectIssuesQueryOptions()
         {
         }
-
-        /// <summary>
-        /// Return issues created after the given time (inclusive)
-        /// </summary>
-        public DateTime? CreatedAfter { get; set; }
-
-        /// <summary>
-        /// Return issues created before the given time (inclusive)
-        /// </summary>
-        public DateTime? CreatedBefore { get; set; }
     }
 }

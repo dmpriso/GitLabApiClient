@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GitLabApiClient.Models.Issues.Responses;
 
@@ -21,6 +22,11 @@ namespace GitLabApiClient.Models.Issues.Requests
         /// No+Label lists all issues with no labels.
         /// </summary>
         public IList<string> Labels { get; set; } = new List<string>();
+
+        /// <summary>
+        /// List of label names which may not be included
+        /// </summary>
+        public IList<string> NotLabels { get; set; } = new List<string>();
 
         /// <summary>
         /// The milestone title.
@@ -62,5 +68,25 @@ namespace GitLabApiClient.Models.Issues.Requests
         /// Search issues against their title and description
         /// </summary>
         public string Filter { get; set; }
+
+        /// <summary>
+        /// Return issues created after the given time (inclusive)
+        /// </summary>
+        public DateTime? CreatedAfter { get; set; }
+
+        /// <summary>
+        /// Return issues created before the given time (inclusive)
+        /// </summary>
+        public DateTime? CreatedBefore { get; set; }
+
+        /// <summary>
+        /// Return issues created after the given time (inclusive)
+        /// </summary>
+        public DateTime? UpdatedAfter { get; set; }
+
+        /// <summary>
+        /// Return issues created before the given time (inclusive)
+        /// </summary>
+        public DateTime? UpdatedBefore { get; set; }                
     }
 }

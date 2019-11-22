@@ -45,6 +45,12 @@ namespace GitLabApiClient
             await _httpFacade.Get<Issue>($"projects/{projectId}/issues/{issueId}");
 
         /// <summary>
+        /// Retrieves group issues.
+        /// </summary>
+        public async Task<Issue> GetForGroupAsync(ProjectId groupId, int issueId) =>
+            await _httpFacade.Get<Issue>($"groups/{groupId}/issues/{issueId}");
+
+        /// <summary>
         /// Retrieves issues from a project.
         /// By default retrieves opened issues from all users.
         /// </summary>
@@ -57,6 +63,22 @@ namespace GitLabApiClient
             options?.Invoke(queryOptions);
 
             string url = _projectIssuesQueryBuilder.Build($"projects/{projectId}/issues", queryOptions);
+            return await _httpFacade.GetPagedList<Issue>(url);
+        }
+
+        /// <summary>
+        /// Retrieves issues from a group.
+        /// By default retrieves opened issues from all users.
+        /// </summary>
+        /// <param name="groupId">The name of the group.</param>
+        /// <param name="options">Issues retrieval options.</param>
+        /// <returns>Issues satisfying options.</returns>
+        public async Task<IList<Issue>> GetForGroupAsync(ProjectId groupId, Action<IssuesQueryOptions> options = null)
+        {
+            var queryOptions = new IssuesQueryOptions();
+            options?.Invoke(queryOptions);
+
+            string url = _queryBuilder.Build($"groups/{groupId}/issues", queryOptions);
             return await _httpFacade.GetPagedList<Issue>(url);
         }
 
@@ -149,5 +171,27 @@ namespace GitLabApiClient
         /// <param name="noteId">The ID of a note.</param>
         public async Task DeleteNoteAsync(ProjectId projectId, int issueIid, int noteId) =>
             await _httpFacade.Delete($"projects/{projectId}/issues/{issueIid}/notes/{noteId}");
+
+        /// <summary>
+        /// Adds spent time to an issue
+        /// </summary>
+        /// <returns>The newly created issue note.</returns>
+        /// <param name="projectId">The ID, path or <see cref="Project"/> of the project.</param>
+        /// <param name="issueIid">The IID of an issue.</param>
+        /// <param name="spentTimeSeconds">Spent time, in seconds.</param>
+        public async Task<IssueTimeStatistic> AddSpentTimeAsync(ProjectId projectId, int issueIid, int spentTimeSeconds) =>
+            await _httpFacade.Post<IssueTimeStatistic>($"projects/{projectId}/issues/{issueIid}/add_spent_time", 
+                new AddSpentTimeRequest(spentTimeSeconds));
+
+        /// <summary>
+        /// Resets spent time to an issue
+        /// </summary>
+        /// <returns>The newly created issue note.</returns>
+        /// <param name="projectId">The ID, path or <see cref="Project"/> of the project.</param>
+        /// <param name="issueIid">The IID of an issue.</param>
+        /// <param name="spentTimeSeconds">Spent time, in seconds.</param>
+        public async Task<IssueTimeStatistic> ResetSpentTimeAsync(ProjectId projectId, int issueIid) =>
+            await _httpFacade.Post<IssueTimeStatistic>($"projects/{projectId}/issues/{issueIid}/reset_spent_time");
+
     }
 }

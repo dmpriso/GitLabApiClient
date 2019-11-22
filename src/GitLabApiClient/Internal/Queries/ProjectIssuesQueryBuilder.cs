@@ -13,12 +13,6 @@ namespace GitLabApiClient.Internal.Queries
             }
 
             base.BuildCore(options);
-
-            if (projectIssuesQueryOptions.CreatedAfter.HasValue)
-                Add("created_after", projectIssuesQueryOptions.CreatedAfter.Value);
-
-            if (projectIssuesQueryOptions.CreatedBefore.HasValue)
-                Add("created_before", projectIssuesQueryOptions.CreatedBefore.Value);
         }
     }
 }
